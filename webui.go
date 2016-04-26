@@ -66,6 +66,8 @@ func (self *WebUI) getUpdatesHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid argument \"offset\"", 400)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json; encoding=UTF-8")
+	w.WriteHeader(200)
 	updates := self.tgBot.GetUpdates(int(lastIdx))
 	result := struct {
 		Result *[]telebot.Update `json:"result"`
@@ -74,7 +76,6 @@ func (self *WebUI) getUpdatesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	stream, err := json.Marshal(result)
 	if err != nil { panic(err) }
-	w.Header().Set("Content-Type", "application/json; encoding=UTF-8")
 	w.Write(stream)
 }
 
