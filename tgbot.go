@@ -93,7 +93,7 @@ func (bot *TgBot) GetUpdates(lastIdx int) (messages []telebot.Update) {
 	return
 }
 
-func (bot *TgBot) SendMessage(recipient telebot.Recipient, message string, options ...interface{}) (err error) {
+func (bot *TgBot) SendMessage(recipient telebot.Recipient, message string, options ...any) (err error) {
 	msg, err := bot.Bot.Send(recipient, message, options...)
 	if err != nil {
 		return err

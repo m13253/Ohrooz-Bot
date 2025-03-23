@@ -87,14 +87,19 @@ func (ui *WebUI) sendMessageHandler(w http.ResponseWriter, r *http.Request) {
 	chat_id := r.FormValue("chat_id")
 	reply_to_message_id := r.FormValue("reply_to_message_id")
 	reply_to_message_id_int, _ := strconv.ParseInt(reply_to_message_id, 0, 0)
-	var send_options *telebot.SendOptions
+	send_options := []any{}
 	if reply_to_message_id_int != 0 {
-		send_options = new(telebot.SendOptions)
-		send_options.ReplyTo.ID = int(reply_to_message_id_int)
+		send_options = []any{
+			&telebot.SendOptions{
+				ReplyTo: &telebot.Message{
+					ID: int(reply_to_message_id_int),
+				},
+			},
+		}
 	}
 	err := ui.tgBot.SendMessage(SimpleDestination{
 		ID: chat_id,
-	}, text, send_options)
+	}, text, send_options...)
 	if err != nil {
 		http.Error(w, "Failed to send message", http.StatusServiceUnavailable)
 		return
