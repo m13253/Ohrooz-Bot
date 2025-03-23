@@ -7,18 +7,18 @@ import (
 )
 
 type BotResp struct {
-	tgBot       *TgBot
-	random      *rand.Rand
+	tgBot  *TgBot
+	random *rand.Rand
 }
 
-func NewBotResp(tgBot *TgBot) (self *BotResp) {
-	self = new(BotResp)
-	self.tgBot = tgBot
-	self.random = rand.New(rand.NewSource(time.Now().UnixNano()))
+func NewBotResp(tgBot *TgBot) (resp *BotResp) {
+	resp = new(BotResp)
+	resp.tgBot = tgBot
+	resp.random = rand.New(rand.NewSource(time.Now().UnixNano()))
 	return
 }
 
-func (self *BotResp) GetResponse(ask string) (resp string) {
+func (resp *BotResp) GetResponse(ask string) string {
 	if ok, _ := regexp.MatchString("^/?test(@|$)", ask); ok {
 		return "test ok"
 	}
@@ -31,5 +31,5 @@ func (self *BotResp) GetResponse(ask string) (resp string) {
 	if ok, _ := regexp.MatchString("^/start(@|$)", ask); ok {
 		return "喵呜？"
 	}
-	return
+	return ""
 }
