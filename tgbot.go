@@ -69,7 +69,7 @@ func (bot *TgBot) Run() {
 		go func(ask string) {
 			response := bot.botResp.GetResponse(ask)
 			if len(response) != 0 {
-				bot.SendMessage(message.Chat, response, nil)
+				bot.SendMessage(message.Chat, response)
 			}
 		}(message.Text)
 	}
@@ -93,8 +93,8 @@ func (bot *TgBot) GetUpdates(lastIdx int) (messages []telebot.Update) {
 	return
 }
 
-func (bot *TgBot) SendMessage(recipient telebot.Recipient, message string, options *telebot.SendOptions) (err error) {
-	msg, err := bot.Bot.Send(recipient, message, options)
+func (bot *TgBot) SendMessage(recipient telebot.Recipient, message string, options ...interface{}) (err error) {
+	msg, err := bot.Bot.Send(recipient, message, options...)
 	if err != nil {
 		return err
 	}
